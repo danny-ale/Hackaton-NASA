@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaGlobe } from 'react-icons/fa';
 import Logo from '../assets/logo.webp';
 
 const Navbar = () => {
@@ -19,9 +20,10 @@ const Navbar = () => {
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200 flex items-center"
+            className="bg-gray-800 text-white border border-white px-4 py-2 rounded-4xl hover:bg-gray-600 flex items-center"
           >
-            Change Language
+            <FaGlobe className="mr-2" />
+            Idioma
             <svg
               className="w-4 h-4 ml-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -36,13 +38,13 @@ const Navbar = () => {
             </svg>
           </button>
           {isDropdownOpen && (
-            <ul className="absolute right-0 mt-2 w-48 bg-white text-blue-500 rounded shadow-lg">
-              <li className="flex items-center px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                <img src="/path-to-spanish-flag.png" alt="Spanish" className="h-4 w-4 mr-2" />
+            <ul className="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg">
+              <li className="flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer">
+                <span className="mr-2">🇪🇸</span>
                 Español
               </li>
-              <li className="flex items-center px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                <img src="/path-to-english-flag.png" alt="English" className="h-4 w-4 mr-2" />
+              <li className="flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer">
+                <span className="mr-2">🇺🇸</span>
                 English
               </li>
             </ul>
