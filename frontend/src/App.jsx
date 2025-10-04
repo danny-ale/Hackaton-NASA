@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
-const Navbar = () => {
-  return (
-    <nav className="bg-blue-500 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <a href="#" className="text-lg font-bold">Hackaton NASA</a>
-        <ul className="flex space-x-4">
-          <li><a href="#" className="hover:underline">Home</a></li>
-          <li><a href="#" className="hover:underline">About</a></li>
-          <li><a href="#" className="hover:underline">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-  );
-};
+import Navbar from './components/Navbar';
+import Filters from './components/Filters';
+import MapView from './components/MapView';
+import InfoPanel from './components/InfoPanel';
+import Legend from './components/Legend';
 
 const App = () => {
   const [mapData, setMapData] = useState(null);
@@ -54,18 +44,23 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="h-screen flex flex-col">
       <Navbar />
-      <h1>Mapa de Polinización</h1>
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={(e) => setSelectedDate(e.target.value)}
-      />
-      <MapContainer center={[25.6866, -100.3161]} zoom={10} style={{ height: '500px', width: '100%' }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {mapData && <GeoJSON data={mapData} style={styleFeature} />}
-      </MapContainer>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 flex-1">
+        <div className="col-span-1">
+          <Filters />
+          <div className="h-96 lg:h-auto">
+            <MapContainer center={[25.6866, -100.3161]} zoom={10} style={{ height: '100%', width: '100%' }}>
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {mapData && <GeoJSON data={mapData} style={styleFeature} />}
+            </MapContainer>
+          </div>
+        </div>
+        <div className="col-span-1">
+          <InfoPanel />
+          <Legend />
+        </div>
+      </div>
     </div>
   );
 };
