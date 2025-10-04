@@ -2,6 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+const Navbar = () => {
+  return (
+    <nav className="bg-blue-500 text-white p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <a href="#" className="text-lg font-bold">Hackaton NASA</a>
+        <ul className="flex space-x-4">
+          <li><a href="#" className="hover:underline">Home</a></li>
+          <li><a href="#" className="hover:underline">About</a></li>
+          <li><a href="#" className="hover:underline">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
 const App = () => {
   const [mapData, setMapData] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
@@ -40,6 +55,7 @@ const App = () => {
 
   return (
     <div>
+      <Navbar />
       <h1>Mapa de Polinización</h1>
       <input
         type="date"
