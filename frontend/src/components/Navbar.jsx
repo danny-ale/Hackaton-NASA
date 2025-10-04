@@ -1,4 +1,5 @@
 import React from 'react';
+import Logo from '../assets/logo.webp';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
@@ -8,12 +9,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-500 text-white p-4">
+    <nav className="bg-[#1E2024] text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
-          <img src="/path-to-logo.png" alt="Logo" className="h-8" />
-          <span className="text-lg font-bold">Hackaton NASA</span>
+          <img src={Logo} alt="Logo" className="h-15" />
         </div>
         {/* Language Switch Dropdown */}
         <div className="relative">
