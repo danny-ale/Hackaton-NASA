@@ -1,11 +1,14 @@
-
 import os
+from dotenv import load_dotenv
 import google.generativeai as genai
 
+load_dotenv()
+
 try:
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("La API Key de Gemini no está configurada en las variables de entorno")
+        raise ValueError("La API Key de Gemini no está configurada en el archivo .env")
+
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('models/gemini-2.5-flash')
 except Exception as e:
@@ -20,21 +23,12 @@ def get_recommendation_from_gemini(data):
     # Detectar idioma (por defecto español)
     language = data.get('language', 'es')
 
-
-    # Extraer etapa (stage) si viene del frontend
-    stage = data.get('stage')
-
     # Si el frontend manda geoData, extraer los datos relevantes del primer municipio
     if 'geoData' in data:
         geo = data['geoData']
         if geo and 'features' in geo and len(geo['features']) > 0:
             feature = geo['features'][0]
-            # Priorizar el cultivo recibido explícitamente
-            crop = data.get('crop') or feature['properties'].get('crop')
-            if not crop:
-                # Si no hay crop explícito, usar el primero de top_crops
-                top_crops = feature['properties'].get('top_crops', [])
-                crop = top_crops[0] if top_crops else 'N/A'
+            crop = feature['properties'].get('crop', 'N/A')
             municipality = feature['properties'].get('municipality_name', 'N/A')
             time_series = feature['properties'].get('time_series', [])
             peak_date = time_series[0].get('date', 'N/A') if time_series else 'N/A'
@@ -56,10 +50,9 @@ def get_recommendation_from_gemini(data):
         Based on our NASA data analysis, we have generated the following forecast for the crop **'{crop}'** in the region of **'{municipality}'**:
         - **Estimated Peak Bloom:** {peak_date}
         - **Estimated Harvest Start:** {harvest_date}
-        {'- **Current Stage:** ' + stage if stage else ''}
 
         ### TASK: YOUR ACTION PLAN ###
-        Generate ONLY 3 main recommendations, one for each stage (including the current stage if available), in list format. Each recommendation must have:
+        Generate ONLY 3 main recommendations, one for each stage, in list format. Each recommendation must have:
         - An emoji at the start (🚜, 🐝, 🍇)
         - A brief and clear title (in bold)
         - A single practical, concrete, and direct tip (max 2 lines)
@@ -85,10 +78,9 @@ def get_recommendation_from_gemini(data):
         Basado en nuestro análisis de datos de la NASA, hemos generado el siguiente pronóstico para el cultivo de **'{crop}'** en la región de **'{municipality}'**:
         - **Pico de Floración Estimado:** {peak_date}
         - **Inicio de Cosecha Estimado:** {harvest_date}
-        {'- **Etapa Actual:** ' + stage if stage else ''}
 
         ### TAREA: TU PLAN DE ACCIÓN ###
-        Genera SOLO 3 recomendaciones principales, una para cada etapa (incluyendo la etapa actual si está disponible), en formato de lista. Cada recomendación debe tener:
+        Genera SOLO 3 recomendaciones principales, una para cada etapa, en formato de lista. Cada recomendación debe tener:
         - Un emoji al inicio (🚜, 🐝, 🍇)
         - Un título breve y claro (en negritas)
         - Un solo consejo práctico, concreto y directo (máximo 2 líneas)
