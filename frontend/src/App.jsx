@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import FiltersBar from './components/FiltersBar';
 import InfoPanel from './components/InfoPanel';
 import MapLegend from './components/MapLegend';
-import Logo from './assets/logo.webp';
+import Logo from './assets/Logo.webp';
 import AgroMap from './components/AgroMap';
 import TimePlayer from './components/TimePlayer';
 
