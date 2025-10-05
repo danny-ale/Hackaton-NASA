@@ -34,7 +34,6 @@ const InfoPanel = () => {
         </button>
       </div>
       <div className="mt-4 p-4 rounded">
-        <h3 className="text-lg font-bold mb-2">Asesor Agrónomo Virtual</h3>
         <ChatBox />
       </div>
     </div>

@@ -8,9 +8,9 @@ try:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("La API Key de Gemini no está configurada en el archivo .env")
-    
+
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('models/gemini-2.5-flash')
 except Exception as e:
     print(f"Error al inicializar el modelo de Gemini: {e}")
     model = None
@@ -20,13 +20,24 @@ def get_recommendation_from_gemini(data):
     if not model:
         return {"error": "El modelo de Gemini no pudo ser inicializado. Revisa la configuración y la API Key."}
 
-    # Extraer los datos relevantes del frontend
-    crop = data.get('crop')
-    municipality = data.get('municipality')
-    peak_date = data.get('peak_date')
-    harvest_date = data.get('harvest_date')
-
-# Este es el nuevo string para la variable 'prompt' en tu función
+    # Si el frontend manda geoData, extraer los datos relevantes del primer municipio
+    if 'geoData' in data:
+        geo = data['geoData']
+        if geo and 'features' in geo and len(geo['features']) > 0:
+            feature = geo['features'][0]
+            crop = feature['properties'].get('crop', 'N/A')
+            municipality = feature['properties'].get('municipality_name', 'N/A')
+            # Suponiendo que time_series tiene fechas
+            time_series = feature['properties'].get('time_series', [])
+            peak_date = time_series[0].get('date', 'N/A') if time_series else 'N/A'
+            harvest_date = time_series[-1].get('date', 'N/A') if time_series else 'N/A'
+        else:
+            crop = municipality = peak_date = harvest_date = 'N/A'
+    else:
+        crop = data.get('crop')
+        municipality = data.get('municipality')
+        peak_date = data.get('peak_date')
+        harvest_date = data.get('harvest_date')
 
     prompt = f"""
     ### ROL Y OBJETIVO ###
@@ -38,16 +49,16 @@ def get_recommendation_from_gemini(data):
     - **Inicio de Cosecha Estimado:** {harvest_date}
 
     ### TAREA: TU PLAN DE ACCIÓN ###
-    Genera un **"Plan de Acción Rápido"** para el agricultor. El plan debe ser fácil de leer y muy práctico. Divídelo **EXACTAMENTE** en las siguientes tres secciones, usando títulos en negritas y emojis:
+    Genera SOLO 3 recomendaciones principales, una para cada etapa, en formato de lista. Cada recomendación debe tener:
+    - Un emoji al inicio (🚜, 🐝, 🍇)
+    - Un título breve y claro (en negritas)
+    - Un solo consejo práctico, concreto y directo (máximo 2 líneas)
+    - No agregues introducción ni conclusión, solo la lista de recomendaciones.
 
-    **1. 🚜 Preparando el Terreno (Pre-Floración):**
-    (Aquí dame 2-3 consejos claros sobre preparación, riego y nutrientes en las semanas previas a la fecha pico de floración).
-
-    **2. 🐝 Maximizando la Polinización (Durante la Floración):**
-    (Aquí dame 2-3 consejos cruciales para la semana del pico, enfocados en la gestión de polinizadores como abejas y la protección de las flores de riesgos como heladas tardías).
-
-    **3. 🍇 Asegurando la Cosecha (Post-Floración):**
-    (Aquí dame 2-3 consejos sobre los cuidados post-floración para asegurar que el fruto se desarrolle bien y llegue sano a la cosecha).
+    Ejemplo de formato:
+    🚜 **Preparando el Terreno:** Riega de forma constante y aplica fertilizante rico en fósforo antes de la floración.
+    🐝 **Maximizando la Polinización:** Evita fumigar durante la floración y coloca colmenas cerca del cultivo.
+    🍇 **Asegurando la Cosecha:** Mantén el riego y revisa las plantas para prevenir plagas.
 
     ### REGLAS DE ESTILO ###
     - Usa un lenguaje muy sencillo y directo. Piensa que le hablas a alguien en el campo, no en un laboratorio.
@@ -58,8 +69,28 @@ def get_recommendation_from_gemini(data):
 
     try:
         response = model.generate_content(prompt)
+        text = response.text
+
+        # Parsear la respuesta en formato: emoji **Título:** texto
+        import re
+        pattern = r"([\U0001F300-\U0001FAFF\u2600-\u26FF\u2700-\u27BF])\s*\*\*(.*?)\*\*:\s*(.*)"
+        matches = re.findall(pattern, text)
+        recommendations = []
+        for icon, title, body in matches:
+            recommendations.append({
+                "icon": icon,
+                "title": title.strip(),
+                "text": body.strip()
+            })
+        # Si no se pudo parsear, devolver todo como un solo mensaje
+        if not recommendations:
+            recommendations = [{
+                "icon": "💡",
+                "title": "Recomendación",
+                "text": text.strip()
+            }]
         return {
-            "recommendation": response.text
+            "recommendations": recommendations
         }
     except Exception as e:
         print(f"Error al llamar a la API de Gemini: {e}")
