@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   LineChart,
@@ -9,22 +10,28 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
+const NDVIChart = ({ feature }) => {
+  // Si no hay feature, no mostrar nada
+  if (!feature) return null;
+  const timeSeries = feature?.properties?.time_series || [];
+  // Prepara los datos para la gráfica
+  const chartData = timeSeries.map(ts => ({
+    date: ts.date,
+    ndvi: Math.round(ts.ndvi_value * 100),
+    type: ts.type
+  }));
+  // Separa históricos y predicciones
+  const historicos = chartData.filter(d => d.type === "historical");
+  const predicciones = chartData.filter(d => d.type === "predicted");
+  // Para unir la línea, se concatena el último histórico con los predichos
+  const prediccionLine = historicos.length > 0 ? [historicos[historicos.length-1], ...predicciones] : predicciones;
 
-const data = [
-  { mes: "Ene", verdor: 35 },
-  { mes: "Feb", verdor: 60 },
-  { mes: "Mar", verdor: 78 },
-  { mes: "Abr", verdor: 95 },
-  { mes: "May", verdor: 70 },
-];
-
-const NDVIChart = () => {
   return (
     <div className="bg-[#1b1d2a] p-4 rounded-2xl shadow-lg text-white">
       <ResponsiveContainer width="100%" height={260}>
-        <LineChart data={data}>
+        <LineChart>
           <CartesianGrid strokeDasharray="3 3" stroke="#2d2f3b" />
-          <XAxis dataKey="mes" stroke="#a0a0a0" />
+          <XAxis dataKey="date" stroke="#a0a0a0" type="category" allowDuplicatedCategory={false} />
           <YAxis stroke="#a0a0a0" domain={[0, 100]} />
           <Tooltip
             contentStyle={{
@@ -32,45 +39,28 @@ const NDVIChart = () => {
               border: "none",
               fontSize: "12px",
             }}
+            formatter={(value, name) => [`${value/100}`, "NDVI"]}
           />
-          {/* Línea histórica */}
+          {/* Línea histórica (verde) */}
           <Line
             type="monotone"
-            dataKey="verdor"
+            data={historicos}
+            dataKey="ndvi"
             stroke="#22c55e"
             strokeWidth={3}
-            dot={false}
+            dot={{ r: 4, fill: '#22c55e' }}
+            isAnimationActive={false}
           />
-          {/* Línea punteada predicción */}
+          {/* Línea predicción (amarillo, punteada) */}
           <Line
             type="monotone"
-            dataKey="prediccion"
+            data={prediccionLine}
+            dataKey="ndvi"
             stroke="#fbbf24"
             strokeDasharray="5 5"
             strokeWidth={2}
-            dot={false}
-          />
-          {/* Línea vertical - fecha actual */}
-          <ReferenceLine
-            x="Abr"
-            stroke="#60a5fa"
-            strokeDasharray="3 3"
-            label={{
-              value: "Hoy",
-              position: "top",
-              fontSize: "12px",
-            }}
-          />
-          {/* Línea vertical - pico */}
-          <ReferenceLine
-            x="Abr"
-            stroke="#facc15"
-            strokeWidth={3}
-            label={{
-              value: "Pico",
-              position: "bottom",
-              fontSize: "12px",
-            }}
+            dot={{ r: 4, fill: '#fbbf24' }}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>

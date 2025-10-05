@@ -1,55 +1,52 @@
 import React from 'react';
 import { MapContainer, TileLayer, Circle, ScaleControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
 const statusColorMap = {
-  "dormancy": "#a16207",
-  "growth": "#84cc16",
-  "peak_bloom": "#facc15",
-  "fruiting": "#166534",
+  dormancy: "#a16207",
+  growth: "#84cc16",
+  peak_bloom: "#facc15",
+  fruiting: "#166534",
 };
 
-const AgroMap = ({ geoData, dateIndex, onDateChange }) => {
-  const styleFeature = (feature) => {
-    if (!feature.properties || !feature.properties.time_series || !feature.properties.time_series[dateIndex]) {
-      return {
-        fillColor: "#52525b",
-        weight: 1,
-        opacity: 1,
-        color: 'white',
-        fillOpacity: 0.7
-      };
+const AgroMap = ({ geoData, dateIndex, maxSteps }) => {
+  // Para Point, simplemente usar las coordenadas
+  const getFeatureCenter = (geometry) => {
+    if (geometry.type === "Point") {
+      return [geometry.coordinates[1], geometry.coordinates[0]];
     }
-
-    const status = feature.properties.time_series[dateIndex]?.status;
-    const color = statusColorMap[status] || "#52525b";
-
-    return {
-      fillColor: color,
-      weight: 1,
-      opacity: 1,
-      color: 'white',
-      fillOpacity: 0.7
-    };
+    // Si fuera Polygon, calcular centroide (no usado en agro_data.json actual)
+    if (geometry.type === "Polygon") {
+      const coords = geometry.coordinates[0];
+      let lat = 0, lng = 0, n = coords.length;
+      coords.forEach(([lng_, lat_]) => {
+        lat += lat_;
+        lng += lng_;
+      });
+      return [lat / n, lng / n];
+    }
+    return [25.7, -100.3];
   };
 
-  // Helper para calcular el centroide de un polígono simple
-  const getPolygonCenter = (coordinates) => {
-    let lat = 0, lng = 0, n = coordinates.length;
-    coordinates.forEach(([lng_, lat_]) => {
-      lat += lat_;
-      lng += lng_;
-    });
-    return [lat / n, lng / n];
+  // Calcula el radio del círculo según el valor de NDVI
+  const getRadiusByNDVI = (ndvi) => {
+    // NDVI suele estar entre 0.3 (bajo) y 0.9 (alto)
+    const minNDVI = 0.3;
+    const maxNDVI = 0.9;
+    const minRadius = 6000; // metros
+    const maxRadius = 20000; // metros
+    if (typeof ndvi !== 'number') return minRadius;
+    // Normaliza ndvi entre 0 y 1
+    const norm = Math.max(0, Math.min(1, (ndvi - minNDVI) / (maxNDVI - minNDVI)));
+    return minRadius + norm * (maxRadius - minRadius);
   };
 
   return (
-    <MapContainer 
-      center={[25.7, -100.3]} 
-      zoom={7} 
-      minZoom={7} 
-      maxZoom={20} 
-      maxBounds={[[24.5, -101.5], [26.5, -99.0]]} 
+    <MapContainer
+      center={[25.7, -100.3]}
+      zoom={7}
+      minZoom={7}
+      maxZoom={20}
+      maxBounds={[[24.5, -101.5], [26.5, -99.0]]}
       style={{ height: '600px', width: '100%' }}
     >
       <TileLayer
@@ -57,22 +54,29 @@ const AgroMap = ({ geoData, dateIndex, onDateChange }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
       {geoData.features && geoData.features.map((feature, idx) => {
-        const coords = feature.geometry.coordinates[0];
-        const center = getPolygonCenter(coords);
-        const status = feature.properties?.time_series?.[dateIndex]?.status;
+        const center = getFeatureCenter(feature.geometry);
+        const ts = feature.properties.time_series || [];
+        // Si el paso actual no existe para este municipio, no mostrar círculo
+        if (!ts[dateIndex]) return null;
+        const status = ts[dateIndex]?.status;
         const color = statusColorMap[status] || "#52525b";
+        const ndvi = ts[dateIndex]?.ndvi_value;
+        const radius = getRadiusByNDVI(ndvi);
         return (
           <Circle
             key={idx}
             center={center}
-            radius={10000} // 10km, puedes ajustar el radio
+            radius={radius}
             pathOptions={{ color: 'transparent', fillColor: color, fillOpacity: 0.7, weight: 0 }}
           >
             <>
               <div>
-                <b>Municipio:</b> {feature.properties.municipality_name} <br/>
-                <b>Fecha:</b> {feature.properties.time_series?.[dateIndex]?.date} <br/>
-                <b>Estado:</b> {feature.properties.time_series?.[dateIndex]?.status} ({feature.properties.time_series?.[dateIndex]?.type})
+                <b>Municipio:</b> {feature.properties.municipality_name} <br />
+                <b>Fecha:</b> {ts[dateIndex]?.date} <br />
+                <b>Estado:</b> {ts[dateIndex]?.status} ({ts[dateIndex]?.type})<br />
+                <b>NDVI:</b> {ts[dateIndex]?.ndvi_value} <br />
+                <b>Temp máx (°C):</b> {ts[dateIndex]?.max_temp_c} <br />
+                <b>Precipitación (mm):</b> {ts[dateIndex]?.precipitation_mm}
               </div>
             </>
           </Circle>

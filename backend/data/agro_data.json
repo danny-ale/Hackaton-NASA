@@ -3,15 +3,158 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {
-        "name": "Ejemplo de Parcela",
-        "crop": "Maíz"
-      },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          -100.316667,
-          25.666667
+        "coordinates": [ -99.83565391908799, 25.188746785866226 ]
+      },
+      "properties": {
+        "municipality_name": "Montemorelos",
+        "top_crops": ["Naranja", "Toronja", "Mandarina"],
+        "predicted_peak_date": "2026-04-16",
+        "predicted_harvest_date": "2026-10-18",
+        "time_series": [
+          {
+            "date": "2025-03-01",
+            "status": "dormancy",
+            "type": "historical",
+            "ndvi_value": 0.45,
+            "max_temp_c": 24.5,
+            "precipitation_mm": 5.2
+          },
+          {
+            "date": "2025-03-16",
+            "status": "growth",
+            "type": "historical",
+            "ndvi_value": 0.65,
+            "max_temp_c": 27.2,
+            "precipitation_mm": 10.5
+          },
+          {
+            "date": "2025-04-01",
+            "status": "peak_bloom",
+            "type": "historical",
+            "ndvi_value": 0.79,
+            "max_temp_c": 29.1,
+            "precipitation_mm": 5.0
+          },
+          {
+            "date": "2025-04-16",
+            "status": "fruiting",
+            "type": "historical",
+            "ndvi_value": 0.72,
+            "max_temp_c": 30.5,
+            "precipitation_mm": 15.2
+          },
+          {
+            "date": "2026-03-16",
+            "status": "growth",
+            "type": "predicted",
+            "ndvi_value": 0.68,
+            "max_temp_c": 27.8,
+            "precipitation_mm": 8.0
+          },
+          {
+            "date": "2026-04-01",
+            "status": "growth",
+            "type": "predicted",
+            "ndvi_value": 0.75,
+            "max_temp_c": 28.9,
+            "precipitation_mm": 4.1
+          },
+          {
+            "date": "2026-04-16",
+            "status": "peak_bloom",
+            "type": "predicted",
+            "ndvi_value": 0.82,
+            "max_temp_c": 29.8,
+            "precipitation_mm": 7.5
+          },
+          {
+            "date": "2026-05-01",
+            "status": "fruiting",
+            "type": "predicted",
+            "ndvi_value": 0.76,
+            "max_temp_c": 31.0,
+            "precipitation_mm": 20.0
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -100.01891223461124, 25.280215582155105 ]
+      },
+      "properties": {
+        "municipality_name": "Allende",
+        "top_crops": ["Naranja", "Nogal Pecanero"],
+        "predicted_peak_date": "2026-04-16",
+        "predicted_harvest_date": "2026-10-18",
+        "time_series": [
+          {
+            "date": "2025-03-16",
+            "status": "growth",
+            "type": "historical",
+            "ndvi_value": 0.62,
+            "max_temp_c": 26.9,
+            "precipitation_mm": 11.0
+          },
+          {
+            "date": "2025-04-01",
+            "status": "peak_bloom",
+            "type": "historical",
+            "ndvi_value": 0.77,
+            "max_temp_c": 28.5,
+            "precipitation_mm": 4.3
+          },
+          {
+            "date": "2026-04-01",
+            "status": "growth",
+            "type": "predicted",
+            "ndvi_value": 0.73,
+            "max_temp_c": 28.1,
+            "precipitation_mm": 3.0
+          },
+          {
+            "date": "2026-04-16",
+            "status": "peak_bloom",
+            "type": "predicted",
+            "ndvi_value": 0.80,
+            "max_temp_c": 29.2,
+            "precipitation_mm": 6.8
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -100.07889912766461, 24.825634052779723 ]
+      },
+      "properties": {
+        "municipality_name": "Galeana",
+        "top_crops": ["Manzana", "Papa"],
+        "predicted_peak_date": "2026-05-01",
+        "predicted_harvest_date": "2026-09-15",
+        "time_series": [
+          {
+            "date": "2026-04-16",
+            "status": "growth",
+            "type": "predicted",
+            "ndvi_value": 0.55,
+            "max_temp_c": 22.2,
+            "precipitation_mm": 12.8
+          },
+          {
+            "date": "2026-05-01",
+            "status": "peak_bloom",
+            "type": "predicted",
+            "ndvi_value": 0.65,
+            "max_temp_c": 24.0,
+            "precipitation_mm": 15.1
+          }
         ]
       }
     }
