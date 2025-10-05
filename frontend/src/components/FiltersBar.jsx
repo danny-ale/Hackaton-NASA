@@ -7,23 +7,10 @@ import { LuClockAlert } from 'react-icons/lu';
 const FiltersBar = () => {
   return (
     <div className="bg-[#202126] p-4 mt-[10px] flex flex-wrap gap-8 rounded-lg shadow-md justify-center">
-        
-        <div className='flex flex-col py-2'>
+
+    <div className='flex flex-col py-2'>
         <label className="text-white text-2xl font-bold mb-2">Filtros de busqueda: </label>    
-        </div>
-      
-      <div className='flex flex-col w-[15%]'>
-         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
-        <label className="mb-1 ml-3 self-start flex items-center text-sm">
-          <PiPlantBold className="mr-2" /> Cultivo
-        </label>
-      </div>
-       <select className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm">
-          <option className="py-1">Naranja Navel 🍊</option>
-          <option className="py-1">Nogal Pecane 🌰</option>
-          <option className="py-1">Mandarina 🍊</option>
-        </select>
-      </div>
+    </div>
      
       <div className='flex flex-col w-[15%]'>
          <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
@@ -38,6 +25,19 @@ const FiltersBar = () => {
         </select>
       </div>
 
+        <div className='flex flex-col w-[15%]'>
+         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
+        <label className="mb-1 ml-3 self-start flex items-center text-sm">
+          <PiPlantBold className="mr-2" /> Cultivo
+        </label>
+      </div>
+       <select className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm">
+          <option className="py-1">Naranja Navel 🍊</option>
+          <option className="py-1">Nogal Pecane 🌰</option>
+          <option className="py-1">Mandarina 🍊</option>
+        </select>
+    </div>
+    
       <div className='flex flex-col w-[15%]'>
          <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
         <label className="mb-1 ml-3 self-start flex items-center text-sm">

@@ -1,0 +1,165 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-99.85, 25.29],
+            [-100.15, 25.29],
+            [-100.15, 25.05],
+            [-99.85, 25.05],
+            [-99.85, 25.29]
+          ]
+        ]
+      },
+      "properties": {
+        "municipality_name": "Montemorelos",
+        "time_series": [
+          {
+            "date": "2025-09-21",
+            "status": "growth",
+            "type": "observed"
+          },
+          {
+            "date": "2025-09-28",
+            "status": "peak_bloom",
+            "type": "observed"
+          },
+          {
+            "date": "2025-10-05",
+            "status": "fruiting",
+            "type": "predicted"
+          },
+          {
+            "date": "2025-10-12",
+            "status": "fruiting",
+            "type": "predicted"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-100.34, 25.53],
+            [-100.12, 25.53],
+            [-100.12, 25.33],
+            [-100.34, 25.33],
+            [-100.34, 25.53]
+          ]
+        ]
+      },
+      "properties": {
+        "municipality_name": "Allende",
+        "time_series": [
+          {
+            "date": "2025-09-21",
+            "status": "dormancy",
+            "type": "observed"
+          },
+          {
+            "date": "2025-09-28",
+            "status": "growth",
+            "type": "observed"
+          },
+          {
+            "date": "2025-10-05",
+            "status": "peak_bloom",
+            "type": "predicted"
+          },
+          {
+            "date": "2025-10-12",
+            "status": "fruiting",
+            "type": "predicted"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-99.57, 24.86],
+            [-99.80, 24.86],
+            [-99.80, 24.60],
+            [-99.57, 24.60],
+            [-99.57, 24.86]
+          ]
+        ]
+      },
+      "properties": {
+        "municipality_name": "Linares",
+        "time_series": [
+          {
+            "date": "2025-09-21",
+            "status": "growth",
+            "type": "observed"
+          },
+          {
+            "date": "2025-09-28",
+            "status": "growth",
+            "type": "observed"
+          },
+          {
+            "date": "2025-10-05",
+            "status": "peak_bloom",
+            "type": "predicted"
+          },
+          {
+            "date": "2025-10-12",
+            "status": "fruiting",
+            "type": "predicted"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-100.50, 25.70],
+            [-100.70, 25.70],
+            [-100.70, 25.50],
+            [-100.50, 25.50],
+            [-100.50, 25.70]
+          ]
+        ]
+      },
+      "properties": {
+        "municipality_name": "Nuevo Municipio",
+        "time_series": [
+          {
+            "date": "2025-09-21",
+            "status": "growth",
+            "type": "observed"
+          },
+          {
+            "date": "2025-09-28",
+            "status": "peak_bloom",
+            "type": "observed"
+          },
+          {
+            "date": "2025-10-05",
+            "status": "fruiting",
+            "type": "predicted"
+          },
+          {
+            "date": "2025-10-12",
+            "status": "fruiting",
+            "type": "predicted"
+          }
+        ]
+      }
+    }
+  ]
+}
