@@ -22,13 +22,35 @@ const MapView = () => {
   };
 
   return (
-    <div className="flex flex-col">
-      <MapContainer center={[25.6866, -100.3161]} zoom={10} style={{ height: '400px', width: '100%' }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {/* Placeholder for GeoJSON data */}
-        <GeoJSON data={{}} style={styleFeature} />
-      </MapContainer>
-      <Legend />
+    <div className="bg-gray-900 text-white p-4 rounded-lg shadow-md flex flex-col">
+      <div className="flex-1 flex items-center justify-center h-64">
+        <p>Mapa Interactivo</p>
+      </div>
+      <div className="mt-4 flex justify-around bg-gray-800 p-2 rounded">
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-brown-500 mr-2"></div>
+          <span>Dormancia</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-green-300 mr-2"></div>
+          <span>Inicio de crecimiento</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-yellow-500 mr-2"></div>
+          <span>Ventana óptima</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-green-700 mr-2"></div>
+          <span>Crecimiento de fruto</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-pink-500 mr-2"></div>
+          <span>Pico de floración 🌸</span>
+        </div>
+      </div>
+      <footer className="mt-4 text-gray-400 text-sm text-center">
+        Datos de NASA | Desarrollado en Hackathon 2024
+      </footer>
     </div>
   );
 };

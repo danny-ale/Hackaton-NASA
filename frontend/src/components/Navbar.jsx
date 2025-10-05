@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
-          <img src={Logo} alt="Logo" className="h-15" />
+          <img src={Logo} alt="Logo" className="h-20" />
         </div>
         {/* Language Switch Dropdown */}
         <div className="relative">
