@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { FaGlobe } from 'react-icons/fa';
-import Logo from '../assets/logo.webp';
+import Logo from '../assets/Logo.webp';
 
 
 const Navbar = () => {
