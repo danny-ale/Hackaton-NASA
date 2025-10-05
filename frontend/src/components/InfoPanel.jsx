@@ -32,7 +32,7 @@ const InfoPanel = ({
     const d = new Date(fecha);
     return `${d.getDate().toString().padStart(2, '0')} ${meses[d.getMonth()]} ${d.getFullYear()}`;
   };
-  // --- FUNCIONES PARA DESCARGA ---
+
   const handleDownloadPDF = async () => {
     const uuid = uuidv4();
     const doc = new jsPDF({ background: '#202126' });
