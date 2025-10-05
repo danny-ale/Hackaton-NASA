@@ -18,7 +18,6 @@ const App = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [maxSteps, setMaxSteps] = useState(0);
-  // Estado de filtros: uno para el formulario, otro para los aplicados
   const [formFilters, setFormFilters] = useState({
     municipio: '',
     cultivo: '',
