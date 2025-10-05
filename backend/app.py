@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils.gemini_client import get_recommendation_from_gemini
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}}, supports_credentials=True)
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "https://nasa-agrobloom.vercel.app"]}}, supports_credentials=True)
 
 
 @app.route('/api/agro_data', methods=['GET'])
