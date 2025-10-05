@@ -6,9 +6,9 @@ import { translations } from '../utils/translations';
 
 
 
-import testGeoJSON from '../data/testGeoJSON.json';
 
-const ChatBox = () => {
+
+const ChatBox = ({ feature, stage, crop }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,15 +27,19 @@ const ChatBox = () => {
     // eslint-disable-next-line
   }, [language]);
 
-  // Función para pedir recomendación al backend usando testGeoJSON
+  // Función para pedir recomendación al backend usando agro_data.json
   const handleGetRecommendation = async () => {
     setLoading(true);
     setError(null);
     try {
+      // Enviar solo el feature filtrado como geoData (en formato FeatureCollection)
+      const geoData = feature
+        ? { type: 'FeatureCollection', features: [feature] }
+        : null;
       const response = await fetch('http://localhost:5000/api/get_recommendation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ geoData: testGeoJSON, language })
+        body: JSON.stringify({ geoData, language, stage, crop })
       });
       const data = await response.json();
       if (data && data.recommendations) {

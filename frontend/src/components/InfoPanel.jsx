@@ -204,7 +204,7 @@ const InfoPanel = ({
       )}
       <h2 className="text-xl font-semibold mb-4">
         {language === 'en' ? 'Crop Status' : 'Estado del Cultivo'} <span>{t.crops[crop] || crop}</span><br/>
-        <span className="text-lg">{language === 'en' ? 'in' : 'en'} {municipio}</span>
+        <span className="text-lg">{language === 'en' ? 'in' : 'en'} {feature?.properties?.municipality_name || municipio}</span>
       </h2>
       <div className="">
         <p className="text-[17px] mb-4 text-[#d1d5dcc7]">
@@ -252,7 +252,26 @@ const InfoPanel = ({
         </button>
       </div>
       <div className="mt-4 p-4 rounded">
-        <ChatBox />
+        {/* Detectar la etapa actual del cultivo (última en la serie temporal filtrada) */}
+        {(() => {
+          let stage = null;
+          let crop = null;
+          if (feature && feature.properties && feature.properties.time_series && feature.properties.time_series.length > 0) {
+            // Tomar la última etapa de la serie temporal filtrada
+            const last = feature.properties.time_series[feature.properties.time_series.length - 1];
+            stage = last.status || null;
+          }
+          // Detectar el cultivo filtrado (de las props o del feature)
+          if (feature && feature.properties) {
+            // Si hay solo un cultivo, usarlo; si hay varios, usar el primero
+            if (feature.properties.crop) {
+              crop = feature.properties.crop;
+            } else if (feature.properties.top_crops && feature.properties.top_crops.length > 0) {
+              crop = feature.properties.top_crops[0];
+            }
+          }
+          return <ChatBox feature={feature} stage={stage} crop={crop} />;
+        })()}
       </div>
     </div>
   );
