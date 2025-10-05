@@ -1,5 +1,7 @@
 import React from 'react';
 import agroData from '../../../backend/data/agro_data.json';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../utils/translations';
 import { FaFilter } from 'react-icons/fa';
 import { PiPlantBold } from 'react-icons/pi';
 import { FaMapLocationDot } from 'react-icons/fa6';
@@ -8,6 +10,8 @@ import { LuClockAlert } from 'react-icons/lu';
 
 const FiltersBar = ({ filters, setFilters, onApply }) => {
 
+  const { language } = useLanguage();
+  const t = translations[language];
   // Municipios únicos
   const municipios = Array.from(new Set(agroData.features.map(f => f.properties.municipality_name)));
   // Si no hay municipio seleccionado, usar el primero para mostrar cultivos
@@ -88,12 +92,15 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
   return (
   <div className="bg-[#202126] p-3 sm:p-6 md:p-8 mt-4 mb-2 flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 md:gap-8 rounded-lg shadow-md justify-center overflow-x-auto">
       <div className='flex flex-col py-1 min-w-[180px]'>
-        <label className="text-white text-lg sm:text-2xl font-bold mb-1 sm:mb-2">Filtros de búsqueda: </label>
+        <label className="text-white text-lg sm:text-2xl font-bold mb-1 sm:mb-2">
+          {language === 'en' ? 'Search filters:' : 'Filtros de búsqueda:'}
+        </label>
       </div>
       <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
           <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
-            <FaMapLocationDot className="mr-2" /> Región/Municipio
+            <FaMapLocationDot className="mr-2" />
+            {t.municipality}
           </label>
         </div>
         <select
@@ -109,7 +116,8 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
       <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
           <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
-            <PiPlantBold className="mr-2" /> Cultivo
+            <PiPlantBold className="mr-2" />
+            {t.top_crops}
           </label>
         </div>
         <select
@@ -118,14 +126,15 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           onChange={e => setFilters(f => ({ ...f, cultivo: e.target.value }))}
         >
           {cultivos.map(cul => (
-            <option key={cul} className="py-1">{cul}</option>
+            <option key={cul} value={cul} className="py-1">{t.crops[cul] || cul}</option>
           ))}
         </select>
       </div>
       <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
           <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
-            <FaCalendarAlt className="mr-2" /> Temporada
+            <FaCalendarAlt className="mr-2" />
+            {language === 'en' ? 'Season' : 'Temporada'}
           </label>
         </div>
         <select
@@ -140,7 +149,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           {temporadas.map(year => (
             <option key={year} className="py-1">{year}</option>
           ))}
-          <option className="py-1" value="Personalizada">Personalizada</option>
+          <option className="py-1" value="Personalizada">{language === 'en' ? 'Custom' : 'Personalizada'}</option>
         </select>
         {isPersonalizada && (
           <div className="flex flex-row gap-2 mt-2">
@@ -149,7 +158,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
               value={customRange.desde}
               onChange={e => setCustomRange(r => ({ ...r, desde: e.target.value }))}
             >
-              <option value="">Desde</option>
+              <option value="">{language === 'en' ? 'From' : 'Desde'}</option>
               {temporadas.map(year => (
                 <option key={year} value={year}>{year}</option>
               ))}
@@ -159,7 +168,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
               value={customRange.hasta}
               onChange={e => setCustomRange(r => ({ ...r, hasta: e.target.value }))}
             >
-              <option value="">Hasta</option>
+              <option value="">{language === 'en' ? 'To' : 'Hasta'}</option>
               {temporadas.map(year => (
                 <option key={year} value={year}>{year}</option>
               ))}
@@ -170,7 +179,8 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
       <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
           <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
-            <LuClockAlert className="mr-2" /> Última actualización
+            <LuClockAlert className="mr-2" />
+            {language === 'en' ? 'Last update' : 'Última actualización'}
           </label>
         </div>
         <select
@@ -184,9 +194,9 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
             setFilters(f => ({ ...f, actualizacion: e.target.value, fechaSeleccionada: fecha }));
           }}
         >
-          <option className="py-1">Última</option>
-          <option className="py-1">Hace 1 semana</option>
-          <option className="py-1">Hace 1 mes</option>
+          <option className="py-1">{language === 'en' ? 'Latest' : 'Última'}</option>
+          <option className="py-1">{language === 'en' ? '1 week ago' : 'Hace 1 semana'}</option>
+          <option className="py-1">{language === 'en' ? '1 month ago' : 'Hace 1 mes'}</option>
         </select>
       </div>
       <div className="flex flex-col w-full min-w-[160px] max-w-xs flex-1 justify-end pb-2">
@@ -195,7 +205,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           onClick={onApply}
         >
           <FaFilter className="mr-2" />
-          Aplicar filtros
+          {language === 'en' ? 'Apply filters' : 'Aplicar filtros'}
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from './context/LanguageContext';
 import 'leaflet/dist/leaflet.css';
 import Navbar from './components/Navbar';
 import FiltersBar from './components/FiltersBar';
@@ -27,6 +28,7 @@ const App = () => {
   const [filters, setFilters] = useState(formFilters);
   // Estado para el feature filtrado
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const { language } = useLanguage();
 
   // Calcular el máximo número de pasos de la serie temporal entre todos los features
   useEffect(() => {
@@ -208,12 +210,22 @@ const App = () => {
   <footer className="bg-[#1E2024] text-white py-4 text-center mt-10 md:mt-14 w-full">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-8">
           <img src={Logo} alt="Logo" className="h-10 sm:h-15 mb-2 sm:mb-0" />          
-          <a href="https://www.spaceappschallenge.org/2025/challenges/bloomwatch-an-earth-observation-application-for-global-flowering-phenology/?tab=resources" className="hover:underline text-xs sm:text-base">Recursos</a>
-          <a href="https://www.nasa.gov/privacy/" className="hover:underline text-xs sm:text-base">Políticas Hackaton</a>
-          <a href="https://www.spaceappschallenge.org/2025/challenges/" className="hover:underline text-xs sm:text-base">Hackaton Space Apps Challenge NASA 2025</a>
+          <a href="https://www.spaceappschallenge.org/2025/challenges/bloomwatch-an-earth-observation-application-for-global-flowering-phenology/?tab=resources" className="hover:underline text-xs sm:text-base">
+            {language === 'en' ? 'Resources' : 'Recursos'}
+          </a>
+          <a href="https://www.nasa.gov/privacy/" className="hover:underline text-xs sm:text-base">
+            {language === 'en' ? 'Hackathon Policies' : 'Políticas Hackaton'}
+          </a>
+          <a href="https://www.spaceappschallenge.org/2025/challenges/" className="hover:underline text-xs sm:text-base">
+            {language === 'en' ? 'Hackathon Space Apps Challenge NASA 2025' : 'Hackaton Space Apps Challenge NASA 2025'}
+          </a>
         </div>
         <div className="text-xs sm:text-sm text-gray-500 mt-2">
-          <span>Desarrollado en 2025 &copy; Todos los derechos reservados.</span>
+          <span>
+            {language === 'en'
+              ? 'Developed in 2025 © All rights reserved.'
+              : 'Desarrollado en 2025 © Todos los derechos reservados.'}
+          </span>
         </div>
       </footer>
     </div>

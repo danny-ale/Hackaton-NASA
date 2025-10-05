@@ -1,12 +1,20 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { FaGlobe } from 'react-icons/fa';
 import Logo from '../assets/logo.webp';
 
+
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const { language, setLanguage } = useLanguage();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -39,11 +47,17 @@ const Navbar = () => {
           </button>
           {isDropdownOpen && (
             <ul className="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg">
-              <li className="flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer">
+              <li
+                className={`flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer ${language === 'es' ? 'font-bold' : ''}`}
+                onClick={() => handleLanguageChange('es')}
+              >
                 <span className="mr-2">🇪🇸</span>
                 Español
               </li>
-              <li className="flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer">
+              <li
+                className={`flex items-center px-4 py-2 hover:bg-gray-600 cursor-pointer ${language === 'en' ? 'font-bold' : ''}`}
+                onClick={() => handleLanguageChange('en')}
+              >
                 <span className="mr-2">🇺🇸</span>
                 English
               </li>

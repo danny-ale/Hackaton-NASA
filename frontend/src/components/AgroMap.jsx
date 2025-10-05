@@ -1,14 +1,28 @@
+
 import React from 'react';
-import { MapContainer, TileLayer, Circle, ScaleControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Circle, ScaleControl, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../utils/translations';
+
 const statusColorMap = {
   dormancy: "#a16207",
   growth: "#84cc16",
   peak_bloom: "#facc15",
   fruiting: "#166534",
+  Latencia: "#a16207",
+  Crecimiento: "#84cc16",
+  "Floración máxima": "#facc15",
+  Fructificación: "#166534",
+  Dormancy: "#a16207",
+  Growth: "#84cc16",
+  "Peak bloom": "#facc15",
+  Fruiting: "#166534",
 };
 
 const AgroMap = ({ geoData, dateIndex, maxSteps }) => {
+  const { language } = useLanguage();
+  const t = translations[language];
   // Para Point, simplemente usar las coordenadas
   const getFeatureCenter = (geometry) => {
     if (geometry.type === "Point") {
@@ -56,7 +70,6 @@ const AgroMap = ({ geoData, dateIndex, maxSteps }) => {
       {geoData.features && geoData.features.map((feature, idx) => {
         const center = getFeatureCenter(feature.geometry);
         const ts = feature.properties.time_series || [];
-        // Si el paso actual no existe para este municipio, no mostrar círculo
         if (!ts[dateIndex]) return null;
         const status = ts[dateIndex]?.status;
         const color = statusColorMap[status] || "#52525b";
@@ -69,16 +82,17 @@ const AgroMap = ({ geoData, dateIndex, maxSteps }) => {
             radius={radius}
             pathOptions={{ color: 'transparent', fillColor: color, fillOpacity: 0.7, weight: 0 }}
           >
-            <>
+            <Popup>
               <div>
-                <b>Municipio:</b> {feature.properties.municipality_name} <br />
+                <b>{t.municipality}:</b> {feature.properties.municipality_name} <br />
+                <b>{t.top_crops}:</b> {feature.properties.top_crops.join(', ')} <br />
                 <b>Fecha:</b> {ts[dateIndex]?.date} <br />
-                <b>Estado:</b> {ts[dateIndex]?.status} ({ts[dateIndex]?.type})<br />
-                <b>NDVI:</b> {ts[dateIndex]?.ndvi_value} <br />
-                <b>Temp máx (°C):</b> {ts[dateIndex]?.max_temp_c} <br />
-                <b>Precipitación (mm):</b> {ts[dateIndex]?.precipitation_mm}
+                <b>{t.status[ts[dateIndex]?.status] || t.status[ts[dateIndex]?.status] || ts[dateIndex]?.status}:</b> ({ts[dateIndex]?.type})<br />
+                <b>{t.ndvi_value}:</b> {ts[dateIndex]?.ndvi_value} <br />
+                <b>{t.max_temp_c}:</b> {ts[dateIndex]?.max_temp_c} <br />
+                <b>{t.precipitation_mm}:</b> {ts[dateIndex]?.precipitation_mm}
               </div>
-            </>
+            </Popup>
           </Circle>
         );
       })}

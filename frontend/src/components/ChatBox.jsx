@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../utils/translations';
 
 
 
@@ -10,6 +12,20 @@ const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { language } = useLanguage();
+  const t = translations[language];
+  const prevLang = useRef(language);
+  // Si cambia el idioma, limpia mensajes y vuelve a pedir recomendación si había mensajes
+  useEffect(() => {
+    if (prevLang.current !== language) {
+      if (messages.length > 0) {
+        setMessages([]);
+        setTimeout(() => handleGetRecommendation(), 200); // Llama de nuevo tras limpiar
+      }
+      prevLang.current = language;
+    }
+    // eslint-disable-next-line
+  }, [language]);
 
   // Función para pedir recomendación al backend usando testGeoJSON
   const handleGetRecommendation = async () => {
@@ -19,7 +35,7 @@ const ChatBox = () => {
       const response = await fetch('http://localhost:5000/api/get_recommendation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ geoData: testGeoJSON })
+        body: JSON.stringify({ geoData: testGeoJSON, language })
       });
       const data = await response.json();
       if (data && data.recommendations) {
@@ -58,14 +74,14 @@ const ChatBox = () => {
             text: match[3].replace(/\*\*/g, '').trim()
           });
         }
-        setMessages(parsed.length ? parsed : [{ icon: '💡', title: 'Recomendación', text }]);
+        setMessages(parsed.length ? parsed : [{ icon: '💡', title: language === 'en' ? 'Recommendation' : 'Recomendación', text }]);
       } else if (data && data.message) {
-        setMessages([{ icon: '🤖', title: 'Recomendación', text: data.message }]);
+        setMessages([{ icon: '🤖', title: language === 'en' ? 'Recommendation' : 'Recomendación', text: data.message }]);
       } else {
-        setMessages([{ icon: '❓', title: 'Sin respuesta', text: 'No se recibió una recomendación válida.' }]);
+        setMessages([{ icon: '❓', title: language === 'en' ? 'No response' : 'Sin respuesta', text: language === 'en' ? 'No valid recommendation received.' : 'No se recibió una recomendación válida.' }]);
       }
     } catch (err) {
-      setError('Error al obtener recomendación.');
+  setError(language === 'en' ? 'Error getting recommendation.' : 'Error al obtener recomendación.');
     } finally {
       setLoading(false);
     }
@@ -76,10 +92,12 @@ const ChatBox = () => {
       {/* Encabezado */}
       <div className="mb-4">
         <h2 className="text-2xl font-extrabold flex items-center gap-2">
-          Asesor Agrónomo Virtual
+          {language === 'en' ? 'Virtual Agronomy Advisor' : 'Asesor Agrónomo Virtual'}
         </h2>
         <p className="text text-gray-300 mt-1">
-          Recibe recomendaciones precisas y personalizadas para optimizar tu producción agrícola.
+          {language === 'en'
+            ? 'Get precise and personalized recommendations to optimize your agricultural production.'
+            : 'Recibe recomendaciones precisas y personalizadas para optimizar tu producción agrícola.'}
         </p>
       </div>
 
@@ -90,7 +108,9 @@ const ChatBox = () => {
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? 'Obteniendo recomendación...' : 'Obtener recomendación IA'}
+          {loading
+            ? language === 'en' ? 'Getting recommendation...' : 'Obteniendo recomendación...'
+            : language === 'en' ? 'Get AI Recommendation' : 'Obtener recomendación IA'}
         </button>
       </div>
 
@@ -105,7 +125,7 @@ const ChatBox = () => {
             </div>
           </div>
         ))}
-        {error && <div className="text-red-400">{error}</div>}
+  {error && <div className="text-red-400">{error}</div>}
       </div>
 
       {/* Pie de página */}
@@ -117,9 +137,9 @@ const ChatBox = () => {
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
-          Cerrar
+          {language === 'en' ? 'Close' : 'Cerrar'}
         </button>
-        <span>Impulsado por Gemini IA</span>
+        <span>{language === 'en' ? 'Powered by Gemini AI' : 'Impulsado por Gemini IA'}</span>
       </div>
     </div>
   );

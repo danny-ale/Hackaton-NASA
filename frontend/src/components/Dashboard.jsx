@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import AgroMap from './AgroMap';
 import TimePlayer from './TimePlayer';
+import { useLanguage } from '../context/LanguageContext';
+import { translateAgroData } from '../utils/translations';
 
 const Dashboard = () => {
   const [featureCollection, setFeatureCollection] = useState(null);
+  const [rawData, setRawData] = useState(null);
   const [currentDateIndex, setCurrentDateIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const { language } = useLanguage();
 
   useEffect(() => {
     fetch('/api/agro_data')
       .then(response => response.json())
       .then(data => {
-        setFeatureCollection(data);
+        setRawData(data);
         setIsLoading(false);
       })
       .catch(error => {
@@ -20,8 +24,15 @@ const Dashboard = () => {
       });
   }, []);
 
+  // Traducir los datos cada vez que cambie el idioma o los datos crudos
+  useEffect(() => {
+    if (rawData) {
+      setFeatureCollection(translateAgroData(rawData, language));
+    }
+  }, [rawData, language]);
+
   if (isLoading) {
-    return <div>Cargando datos agrícolas...</div>;
+    return <div>{language === 'en' ? 'Loading agricultural data...' : 'Cargando datos agrícolas...'}</div>;
   }
 
   return (

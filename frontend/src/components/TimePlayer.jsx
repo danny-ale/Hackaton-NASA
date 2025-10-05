@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPlay, FaPause, FaRedo } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
 
 const TimePlayer = ({ 
   currentStep, 
@@ -10,6 +11,7 @@ const TimePlayer = ({
   onReset
 }) => {
   const maxSteps = totalSteps > 0 ? totalSteps - 1 : 0;
+  const { language } = useLanguage();
 
   return (
   <div className="bg-[#202126] p-2 flex flex-col items-center space-y-2 rounded-full shadow-lg w-full mt-80 md:mt-50 lg:mt-0">
@@ -40,7 +42,11 @@ const TimePlayer = ({
           }}
         />
       </div>
-      <div className="text-xs text-gray-300 mt-1">Paso actual: {currentStep + 1} / {totalSteps}</div>
+      <div className="text-xs text-gray-300 mt-1">
+        {language === 'en'
+          ? `Current step: ${currentStep + 1} / ${totalSteps}`
+          : `Paso actual: ${currentStep + 1} / ${totalSteps}`}
+      </div>
       <style>{`
         .custom-slider::-webkit-slider-thumb {
           -webkit-appearance: none;
