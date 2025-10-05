@@ -36,7 +36,7 @@ const ChatBox = ({ feature, stage, crop }) => {
       const geoData = feature
         ? { type: 'FeatureCollection', features: [feature] }
         : null;
-  const response = await fetch('http://localhost:5000/api/get_recommendation', {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/get_recommendation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ geoData, language, stage, crop })
