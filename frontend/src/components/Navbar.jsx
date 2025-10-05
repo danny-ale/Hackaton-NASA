@@ -24,7 +24,6 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <img src={Logo} alt="Logo" className="h-20" />
         </div>
-        {/* Language Switch Dropdown */}
         <div className="relative">
           <button
             onClick={toggleDropdown}
