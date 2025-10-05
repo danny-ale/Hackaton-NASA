@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils.gemini_client import get_recommendation_from_gemini
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}}, supports_credentials=True)
 
 
 @app.route('/api/agro_data', methods=['GET'])
@@ -27,7 +27,17 @@ def handle_recommendation_request():
     if not request_data:
         return jsonify({"error": "No se recibieron datos en la petición."}), 400
 
-    gemini_response = get_recommendation_from_gemini(request_data)
+    import requests
+    try:
+        response = requests.post(
+            'https://nasa-agrobloom.vercel.app/api/get_recommendation',
+            json=request_data,
+            timeout=30
+        )
+        response.raise_for_status()
+        gemini_response = response.json()
+    except requests.RequestException as e:
+        return jsonify({"error": f"Error al conectar con Gemini en Vercel: {str(e)}"}), 500
 
     if "error" in gemini_response:
         return jsonify(gemini_response), 500
