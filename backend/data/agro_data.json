@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ejemplo de Parcela",
+        "crop": "Maíz"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.316667,
+          25.666667
+        ]
+      }
+    }
+  ]
+}
