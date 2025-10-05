@@ -12,7 +12,7 @@ const TimePlayer = ({
   const maxSteps = totalSteps > 0 ? totalSteps - 1 : 0;
 
   return (
-    <div className="bg-[#202126] p-2 flex flex-col items-center space-y-2 rounded-full shadow-lg w-full">
+  <div className="bg-[#202126] p-2 flex flex-col items-center space-y-2 rounded-full shadow-lg w-full mt-80 md:mt-50 lg:mt-0">
       <div className="flex items-center space-x-4 w-full">
         <button 
           onClick={onReset} 

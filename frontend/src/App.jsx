@@ -146,7 +146,7 @@ const App = () => {
   };
 
   return (
-    <div className="bg-[#0f111a] text-white min-h-screen p-4">
+  <div className="bg-[#0f111a] text-white min-h-screen p-3 sm:p-6 md:p-8">
       <Navbar />
       <FiltersBar
         filters={formFilters}
@@ -156,12 +156,13 @@ const App = () => {
           console.log("Filters applied:", formFilters);
         }}
       />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 flex-1">
-        <div className="col-span-1">
-          <div className="h-96 lg:h-auto">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-6 md:mt-10 flex-1">
+        {/* Mapa y controles */}
+  <div className="col-span-1 flex flex-col gap-4 md:gap-6">
+          <div className="h-64 sm:h-96 lg:h-auto w-full mb-2 md:mb-4">
             <AgroMap geoData={filteredMapData} dateIndex={dateIndex} maxSteps={maxSteps} />
           </div>
-          <div className="lg:col-span-2 flex flex-col space-y-4">
+          <div className="flex flex-col space-y-3 md:space-y-4 w-full">
             {maxSteps > 0 ? (
               <TimePlayer
                 currentStep={dateIndex}
@@ -172,20 +173,17 @@ const App = () => {
                 onReset={() => setDateIndex(0)}
               />
             ) : (
-              <div className="text-red-400 text-center">No hay datos de serie temporal para mostrar el slider.</div>
+              <div className="text-red-400 text-center text-xs sm:text-base">No hay datos de serie temporal para mostrar el slider.</div>
             )}
           </div>
           <MapLegend />
         </div>
-        <div className="col-span-1">
-          {/* Mostrar InfoPanel con datos filtrados */}
+        {/* InfoPanel */}
+  <div className="col-span-1 mt-4 md:mt-6 lg:mt-0">
           {selectedFeature && (() => {
-            // Siempre mostrar el cultivo seleccionado en el filtro
             const crop = filters.cultivo;
-            // Advertir si el municipio no tiene ese cultivo
             const hasCrop = selectedFeature?.properties?.top_crops?.some(c => cleanCrop(c).includes(cleanCrop(crop)));
             const peakDate = selectedFeature?.properties?.predicted_peak_date;
-            // Simulación de ventana de polinización: 3 días antes y 1 día después del pico
             let pollStart = null, pollEnd = null;
             if (peakDate) {
               const peak = new Date(peakDate);
@@ -207,14 +205,14 @@ const App = () => {
         </div>
       </div>
       {/* Footer */}
-      <footer className="bg-[#1E2024] text-white py-4 text-center mt-8">
-        <div className="flex justify-center items-center space-x-8">
-          <img src={Logo} alt="Logo" className="h-15" />          
-          <a href="/recursos" className="hover:underline">Recursos</a>
-          <a href="/politicas" className="hover:underline">Políticas Hackaton</a>
-          <a href="/hackaton" className="hover:underline">Hackaton Space Apps Challenge NASA 2025</a>
+  <footer className="bg-[#1E2024] text-white py-4 text-center mt-10 md:mt-14 w-full">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-8">
+          <img src={Logo} alt="Logo" className="h-10 sm:h-15 mb-2 sm:mb-0" />          
+          <a href="https://www.spaceappschallenge.org/2025/challenges/bloomwatch-an-earth-observation-application-for-global-flowering-phenology/?tab=resources" className="hover:underline text-xs sm:text-base">Recursos</a>
+          <a href="https://www.nasa.gov/privacy/" className="hover:underline text-xs sm:text-base">Políticas Hackaton</a>
+          <a href="https://www.spaceappschallenge.org/2025/challenges/" className="hover:underline text-xs sm:text-base">Hackaton Space Apps Challenge NASA 2025</a>
         </div>
-        <div className="text-sm text-gray-500 mt-2">
+        <div className="text-xs sm:text-sm text-gray-500 mt-2">
           <span>Desarrollado en 2025 &copy; Todos los derechos reservados.</span>
         </div>
       </footer>

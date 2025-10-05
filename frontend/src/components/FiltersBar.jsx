@@ -86,18 +86,18 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
   }, [filters.municipio, cultivos]);
 
   return (
-    <div className="bg-[#202126] p-4 mt-[10px] flex flex-wrap gap-8 rounded-lg shadow-md justify-center">
-      <div className='flex flex-col py-2'>
-        <label className="text-white text-2xl font-bold mb-2">Filtros de busqueda: </label>
+  <div className="bg-[#202126] p-3 sm:p-6 md:p-8 mt-4 mb-2 flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 md:gap-8 rounded-lg shadow-md justify-center overflow-x-auto">
+      <div className='flex flex-col py-1 min-w-[180px]'>
+        <label className="text-white text-lg sm:text-2xl font-bold mb-1 sm:mb-2">Filtros de búsqueda: </label>
       </div>
-      <div className='flex flex-col w-[15%]'>
+      <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
-          <label className="mb-1 ml-3 self-start flex items-center text-sm">
+          <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
             <FaMapLocationDot className="mr-2" /> Región/Municipio
           </label>
         </div>
         <select
-          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm"
+          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-xs sm:text-sm"
           value={filters.municipio}
           onChange={e => setFilters(f => ({ ...f, municipio: e.target.value }))}
         >
@@ -106,14 +106,14 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           ))}
         </select>
       </div>
-      <div className='flex flex-col w-[15%]'>
+      <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
-          <label className="mb-1 ml-3 self-start flex items-center text-sm">
+          <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
             <PiPlantBold className="mr-2" /> Cultivo
           </label>
         </div>
         <select
-          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm"
+          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-xs sm:text-sm"
           value={filters.cultivo}
           onChange={e => setFilters(f => ({ ...f, cultivo: e.target.value }))}
         >
@@ -122,14 +122,14 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           ))}
         </select>
       </div>
-      <div className='flex flex-col w-[15%]'>
+      <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
-          <label className="mb-1 ml-3 self-start flex items-center text-sm">
+          <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
             <FaCalendarAlt className="mr-2" /> Temporada
           </label>
         </div>
         <select
-          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm"
+          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-xs sm:text-sm"
           value={filters.temporada}
           onChange={e => {
             setFilters(f => ({ ...f, temporada: e.target.value, temporada_desde: '', temporada_hasta: '' }));
@@ -145,7 +145,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
         {isPersonalizada && (
           <div className="flex flex-row gap-2 mt-2">
             <select
-              className="bg-[#3F4045] text-white border border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm w-1/2"
+              className="bg-[#3F4045] text-white border border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-xs sm:text-sm w-1/2"
               value={customRange.desde}
               onChange={e => setCustomRange(r => ({ ...r, desde: e.target.value }))}
             >
@@ -155,7 +155,7 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
               ))}
             </select>
             <select
-              className="bg-[#3F4045] text-white border border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm w-1/2"
+              className="bg-[#3F4045] text-white border border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-xs sm:text-sm w-1/2"
               value={customRange.hasta}
               onChange={e => setCustomRange(r => ({ ...r, hasta: e.target.value }))}
             >
@@ -167,14 +167,14 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           </div>
         )}
       </div>
-      <div className='flex flex-col w-[15%]'>
+      <div className='flex flex-col w-full min-w-[160px] max-w-xs flex-1'>
         <div className="flex flex-col items-center text-white bg-[#2D2E33] p-1 rounded-t-lg">
-          <label className="mb-1 ml-3 self-start flex items-center text-sm">
+          <label className="mb-1 ml-2 self-start flex items-center text-xs sm:text-sm">
             <LuClockAlert className="mr-2" /> Última actualización
           </label>
         </div>
         <select
-          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-sm"
+          className="bg-[#3F4045] text-white border border-gray-600 rounded-b-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-xs sm:text-sm"
           value={filters.actualizacion}
           onChange={e => {
             let fecha = '';
@@ -189,10 +189,9 @@ const FiltersBar = ({ filters, setFilters, onApply }) => {
           <option className="py-1">Hace 1 mes</option>
         </select>
       </div>
-      <div className="flex flex-col w-[15%] justify-end pb-2">
+      <div className="flex flex-col w-full min-w-[160px] max-w-xs flex-1 justify-end pb-2">
         <button
-          className="flex items-center justify-center px-4 py-2 bg-gray-700 text-white rounded-full border border-white hover:bg-gray-600 cursor-pointer font-semibold mt-auto shadow"
-          style={{ minWidth: '100%' }}
+          className="flex items-center justify-center px-2 py-2 sm:px-4 bg-gray-700 text-white rounded-full border border-white hover:bg-gray-600 cursor-pointer font-semibold mt-auto shadow text-xs sm:text-base w-full"
           onClick={onApply}
         >
           <FaFilter className="mr-2" />
