@@ -1,14 +1,11 @@
+
 import os
-from dotenv import load_dotenv
 import google.generativeai as genai
 
-load_dotenv()
-
 try:
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("La API Key de Gemini no está configurada en el archivo .env")
-
+        raise ValueError("La API Key de Gemini no está configurada en las variables de entorno")
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('models/gemini-2.5-flash')
 except Exception as e:

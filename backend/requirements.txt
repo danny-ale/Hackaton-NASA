@@ -2,7 +2,9 @@ Flask
 flask-cors
 google-generativeai
 
-python-dotenv
+Flask
+flask-cors
+google-generativeai
 Flask
 flask-cors
 google-generativeai
